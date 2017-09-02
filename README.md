@@ -1,4 +1,4 @@
-# MangaUpdates
+# MangaUpdater
 This will scrape specific subreddits for new manga chapters and send updates to the user via email.
 
 # Why would you make this?
