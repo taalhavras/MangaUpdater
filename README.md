@@ -4,6 +4,9 @@ This will scrape specific subreddits for new manga chapters and send updates to 
 # Why would you make this?
 Because I like reading manga and I dislike having to constantly check different places to see if new chapters are up yet. Since I already check my email every two minutes this will save me (and hopefully you) some time! 
 
+# Praw
+This project uses PRAW, the python reddit API wrapper. To get set up with praw read [this](https://praw.readthedocs.io/en/latest/getting_started/quick_start.html). In addition to installing PRAW you will need to obtain a reddit client secret and client id, which the link shows you how to do. Once you have those values, just paste them into the script and you should be good to go!
+
 # Yagmail
 I used yagmail (https://github.com/kootenpv/yagmail) to handle sending emails. You must set up yagmail using keyring and a .yagmail file to use this code, see the yagmail readme for details. If you really don't want to do this you could have your email and password stored in the code but I personally found that unattractive. 
 
