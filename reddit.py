@@ -139,23 +139,27 @@ def get_comments_link(submission):
 
 def main():
     # Iterate over all submissions to the manga subreddit
-    for sub in MANGA_SUBREDDIT.stream.submissions():
-        title = sub.title.encode("utf-8")
-        if valid_title(title):
-            try:
-                chapter = Chapter.from_submission(sub)
-                if is_new_chapter(chapter):
-                    update_chapter(chapter)
-                    send_chapter(chapter, get_comments_link(sub))
-            except ValueError as e:
-                contents = [title, get_comments_link(sub), e.message]
-                send_error_msg(contents)
-            except PrawcoreException as p:
-                time.sleep(10)
-                # uncomment if you want email alerts about praw exceptions
-                # contents = ['prawcore exception', p.message]
-                # send_error_msg(contents)
-
+    run = True
+    while run:
+        try:
+            for sub in MANGA_SUBREDDIT.stream.submissions():
+                title = sub.title.encode("utf-8")
+                if valid_title(title):
+                    chapter = Chapter.from_submission(sub)
+                    if is_new_chapter(chapter):
+                        update_chapter(chapter)
+                        send_chapter(chapter, get_comments_link(sub))
+        except ValueError as e:
+            contents = [title, get_comments_link(sub), e.message]
+            send_error_msg(contents)
+        except PrawcoreException as p:
+            time.sleep(10)
+            # uncomment if you want email alerts about praw exceptions
+            # contents = ['prawcore exception', p.message]
+            # send_error_msg(contents)
+        except KeyboardInterrupt:
+            print("stopping script")
+            run = False
 # run main
 if __name__ == "__main__":
     main()
