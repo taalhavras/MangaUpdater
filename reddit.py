@@ -1,6 +1,8 @@
 import praw
 import datetime
 import yagmail
+import time
+from prawcore.exceptions import PrawcoreException
 
 class Chapter(object):
     """A class to represent a manga chapter"""
@@ -148,6 +150,12 @@ def main():
             except ValueError as e:
                 contents = [title, get_comments_link(sub), e.message]
                 send_error_msg(contents)
+            except PrawcoreException as p:
+                time.sleep(10)
+                # uncomment if you want email alerts about praw exceptions
+                # contents = ['prawcore exception', p.message]
+                # send_error_msg(contents)
+
 # run main
 if __name__ == "__main__":
     main()
