@@ -100,6 +100,8 @@ def get_chapter_number(submission):
             chapter_candidates.append(float(t))
         except ValueError:
             pass
+    if len(chapter_candidates) == 0:
+        raise ValueError("couldn't find chapter number in post with title: " + submission.title)
     return chapter_candidates[len(chapter_candidates) -1]
 
 def is_new_chapter(chapter):
