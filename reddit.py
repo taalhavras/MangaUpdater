@@ -44,6 +44,9 @@ PREFIX = "[disc] "
 # will contain partial post titles to search for
 TITLES = []
 
+# will contain bad submissions that cause ValueErrors so we don't waste time checking them again.
+BAD_SUBMISSIONS = []
+
 # read in titles from file
 MANGA_FILE = open("manga_names.txt", "r")
 TITLES = [PREFIX + line.rstrip('\n').lower() for line in MANGA_FILE]
@@ -146,13 +149,14 @@ def main():
         try:
             for sub in MANGA_SUBREDDIT.stream.submissions():
                 title = sub.title.encode("utf-8")
-                if valid_title(title):
+                if sub not in BAD_SUBMISSIONS and valid_title(title):
                     chapter = Chapter.from_submission(sub)
                     if is_new_chapter(chapter):
                         update_chapter(chapter)
                         send_chapter(chapter, get_comments_link(sub))
         except ValueError:
-            pass
+            BAD_SUBMISSIONS.append(sub)
+            time.sleep(10)
         except PrawcoreException as p:
             time.sleep(10)
             # uncomment if you want email alerts about praw exceptions
