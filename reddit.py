@@ -151,9 +151,8 @@ def main():
                     if is_new_chapter(chapter):
                         update_chapter(chapter)
                         send_chapter(chapter, get_comments_link(sub))
-        except ValueError as e:
-            contents = [title, get_comments_link(sub), e.message]
-            send_error_msg(contents)
+        except ValueError:
+            pass
         except PrawcoreException as p:
             time.sleep(10)
             # uncomment if you want email alerts about praw exceptions
