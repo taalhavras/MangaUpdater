@@ -47,6 +47,10 @@ TITLES = []
 # will contain bad submissions that cause ValueErrors so we don't waste time checking them again.
 BAD_SUBMISSIONS = []
 
+# yagmail instance
+YAG = yagmail.SMTP()
+
+
 # read in titles from file
 MANGA_FILE = open("manga_names.txt", "r")
 TITLES = [PREFIX + line.rstrip('\n').lower() for line in MANGA_FILE]
@@ -67,9 +71,8 @@ def get_date(submission):
 
 def send_error_msg(msg):
     """function that sends an error message to your email in case the script crashes while processing a submission"""
-    yag = yagmail.SMTP()
     subject = "CHAPTER: ERROR, INVALID SUBMISSION"
-    yag.send(subject = subject, contents = msg)
+    YAG.send(subject = subject, contents = msg)
 
 def valid_title(title):
     """function that takes in a post title and determines if it's a valid submission."""
@@ -133,10 +136,9 @@ def send_chapter(chapter, comments_link):
     # note that this only works if you use keyring to save your email password and create a .yagmail file
     # in your home directory to specify the email. See the yagmail readme on github for full details on
     # how to set this up.
-    yag = yagmail.SMTP()
     contents = [chapter.link, comments_link]
     # this yag.send sends an email to yourself using the email in the .yagmail file.
-    yag.send(subject='CHAPTER: ' + chapter.series + ' ' + '{0:g}'.format(chapter.chapter), contents=contents)
+    YAG.send(subject='CHAPTER: ' + chapter.series + ' ' + '{0:g}'.format(chapter.chapter), contents=contents)
 
 def get_comments_link(submission):
     """function that gets the link to the comments section for a given submission to the manga subreddit"""
